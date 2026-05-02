@@ -92,6 +92,8 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
             (*currentNode)->rchild = temp;
             temp = (*parentNode)->lchild;
         }
+        
+        (*currentNode)->lchild = temp->rchild;
         temp->rchild = *currentNode;
     }
     
@@ -145,15 +147,17 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
         }
         else if ((*parentNode)->lchild == *currentNode) {
             (*parentNode)->lchild = (*currentNode)->rchild;
-            temp = (*parentNode)->lchild;
+            (*parentNode)->lchild->lchild = *currentNode;
         }
+        (*currentNode)->rchild = temp->lchild;
         temp->lchild = *currentNode;
+        
     }
     
 }
 
 
-int getHeight(struct stack st, struct node* currentNode, int totalHeight) { // evaluates depth
+int getHeight(struct stack st, struct node* currentNode, int totalHeight) { // evaluates height
     int height = totalHeight-(st.top+1);
     
     if (height > currentNode->height)
@@ -262,7 +266,6 @@ void inOrderSuccessor(struct node* currentNode, struct stack* st) {
     return;
 }
 
-
 void deleteNode(struct node** rootNode, int key) {
     struct stack st1 = createStack(20);
     struct stack st2 = createStack(20);
@@ -350,14 +353,21 @@ int main() {
     insertNode(&rootNode, 33);
     insertNode(&rootNode, 35);
     insertNode(&rootNode, 38);
+    insertNode(&rootNode, 29);
+    insertNode(&rootNode, 46);
+    
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
+    
+    insertNode(&rootNode, 51);
     
     displayPreOrder(rootNode);
     displayInOrder(rootNode);
     
-    deleteNode(&rootNode, 35);
+    // deleteNode(&rootNode, 35);
     
-    displayPreOrder(rootNode);
-    displayInOrder(rootNode);
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
     
     return 0;
 }
