@@ -269,63 +269,24 @@ void inOrderSuccessor(struct node* currentNode, struct stack* st) {
 void deleteNode(struct node** rootNode, int key) {
     struct stack st1 = createStack(20);
     struct stack st2 = createStack(20);
-    
-    struct node* ptr = searchAKey(*rootNode, &st1, key);
-    if (ptr->lchild || ptr->rchild) {
-        inOrderSuccessor(ptr, &st2);
-        int totalHeight = (st1.top+1)+(st2.top+1);
-        
-        struct node* parentPtr = 0;
-        struct node* ptrSucc = pop(&st2);
-        struct node* parentPtrSucc = pop(&st2);
-        if (!isEmptyStack(st1))
-            parentPtr = stackTop(st1);
-        
-        int data = parentPtrSucc->data;
-        if (parentPtr->data < ptr->data)
-                parentPtr->rchild = ptrSucc;
-        else
-            parentPtr->lchild = ptrSucc;
-    
-        if (parentPtrSucc->lchild == ptrSucc)
-            parentPtrSucc->lchild = 0;
-        else
-            parentPtrSucc->rchild = 0;
 
-        // if (!isEmptyStack(st1)) {
-        //     if (parentPtr->data < ptr->data)
-        //         parentPtr->rchild = ptrSucc;
-        //     else
-        //         parentPtr->lchild = ptrSucc;
-        
-        //     if (parentPtrSucc->lchild == ptrSucc)
-        //         parentPtrSucc->lchild = 0;
-        //     else
-        //         parentPtrSucc->rchild = 0;
-        //     // checking the balance factor of nodes ancestor to the node which is deleted
-        // }    
-        
-        // else {
-        //     if (!ptrSucc)
-        //         *rootNode = ptr->lchild; // predecessor in this special case that is if the root node is deleted which does not have
-        //         // any right child
-        //     else
-        //         *rootNode = ptrSucc;
+    struct node* currentNode = searchAKey(*rootNode, &st1, key);
+    struct node* currentNodeParent = stackTop(st1);
 
-        // }
-        if (ptr == *rootNode && !ptrSucc)
-            *rootNode = ptr->lchild;
-        else    
-            *rootNode = ptrSucc;
-        ptrSucc->lchild = ptr->lchild;
-        ptrSucc->rchild = ptr->rchild;
-        free(ptr);
-        ptr = 0;
-        checkForRotation(rootNode, &parentPtr, &ptrSucc, &st2, totalHeight, data);
+    inOrderSuccessor(currentNode, &st2);
+    struct node* currentNodeSucc = pop(&st2);
+    struct node* currentNodeSuccParent = pop(&st2);
 
-    }
-    else
-        free(ptr);
+    int succData = currentNodeSucc->data;
+    currentNode->data = succData;
+
+    currentNodeSuccParent->lchild = currentNodeSucc->rchild;
+    free(currentNodeSucc);
+
+    // checking for balance factor of currentNode and the rootNode
+    int bf = balanceFactor(currentNode);
+    if (bf > 1 || bf < -1)
+        avlRotation(currentNodeParent, currentNode, key); // for now 0 is simply a placeholder
 }
 
 void displayInOrder(struct node* rootNode) {
