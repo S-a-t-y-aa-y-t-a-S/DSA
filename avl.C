@@ -286,7 +286,7 @@ void deleteNode(struct node** rootNode, int key) {
     // checking for balance factor of currentNode and the rootNode
     int bf = balanceFactor(currentNode);
     if (bf > 1 || bf < -1)
-        avlRotation(currentNodeParent, currentNode, key); // for now 0 is simply a placeholder
+        avlRotation(currentNodeParent, currentNode, 0); // for now 0 is simply a placeholder
 }
 
 void displayInOrder(struct node* rootNode) {
