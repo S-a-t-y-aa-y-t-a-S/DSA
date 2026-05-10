@@ -290,7 +290,7 @@ void deleteNode(struct node** rootNode, int key) {
             stackTop(st1)->lchild = succNode->rchild;
         
         free(succNode);
-        succNode = 0;
+        
         printf ("let us try it out\n");
 
         // need to fix this bug
