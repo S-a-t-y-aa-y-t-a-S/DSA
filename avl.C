@@ -291,6 +291,7 @@ void deleteNode(struct node** rootNode, int key) {
         
         free(succNode);
         succNode = 0;
+        printf ("need to complete this asap\n");
     
 
         // need to fix this bug
