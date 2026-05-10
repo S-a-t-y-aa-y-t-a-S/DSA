@@ -295,7 +295,7 @@ void deleteNode(struct node** rootNode, int key) {
 
         // need to fix this bug
         checkForRotation(rootNode, 0, pop(&st1), &st1, st1.top+1, 0);
-
+// DSA-3 #done #comment to be completed
     }
     
 }
