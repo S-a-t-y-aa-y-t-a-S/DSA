@@ -291,6 +291,7 @@ void deleteNode(struct node** rootNode, int key) {
         
         free(succNode);
         succNode = 0;
+        printf ("let us try it out\n");
 
         // need to fix this bug
         checkForRotation(rootNode, 0, pop(&st1), &st1, st1.top+1, 0);
