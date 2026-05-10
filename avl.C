@@ -180,7 +180,12 @@ int balanceFactor(struct node* currentNode) {
 }
 
 
-void checkForRotation(struct node** rootNode, struct node** parentNode, struct node** currentNode, struct stack* st, int totalHeight, int data) {
+void checkForRotation(
+    struct node** rootNode, 
+    struct node** parentNode, 
+    struct node** currentNode, 
+    struct stack* st, int totalHeight, 
+    int data) {
     
     while (!isEmptyStack(*st)) {
         *currentNode = pop(st);
@@ -204,14 +209,27 @@ void checkForRotation(struct node** rootNode, struct node** parentNode, struct n
     }
 }
 
-struct node* searchAKey(struct node* rootnode, struct stack* st, int key) {
+void inOrderSuccessor(struct node* currentNode, struct stack* st) {
+    struct node* ptr = currentNode->rchild;
+    
+    while (ptr) {
+        struct node* trail = ptr;
+        ptr = ptr->lchild;
+        
+        push(st, trail);
+    }
+    return;
+}
+
+
+struct node* searchAKey(struct node* rootnode, struct stack* st, int key, char choice) {
     struct node* ptr = rootnode;
     struct node* trail = ptr;
     while (ptr) {
         
         trail = ptr;
         if (ptr->data == key)
-            return trail;
+            break;
         else if (ptr->data > key)
             ptr = ptr->lchild;
         else if (ptr->data < key)
@@ -219,7 +237,13 @@ struct node* searchAKey(struct node* rootnode, struct stack* st, int key) {
         
         push(st, trail);
     }
-    return ptr; // assigned a null value
+    if (ptr) {
+        if (choice == 'D') {
+            push(st, ptr);
+            inOrderSuccessor(ptr, st);
+        }
+    }
+    return ptr;
 }
 
 void insertNode(struct node** rootNode, int data) {
@@ -227,7 +251,7 @@ void insertNode(struct node** rootNode, int data) {
         
         struct node* ptr = *rootNode;
         struct stack st = createStack(20);
-        struct node* trail = searchAKey(ptr, &st, data);
+        struct node* trail = searchAKey(ptr, &st, data, 'I');
         
         if (!trail) {
             
@@ -253,40 +277,26 @@ void insertNode(struct node** rootNode, int data) {
 }
 
 
-void inOrderSuccessor(struct node* currentNode, struct stack* st) {
-    struct node* ptr = currentNode->rchild;
-    struct node* trail = ptr;
-    
-    while (ptr) {
-        trail = ptr;
-        ptr = ptr->lchild;
-        
-        push(st, trail);
-    }
-    return;
-}
-
 void deleteNode(struct node** rootNode, int key) {
     struct stack st1 = createStack(20);
-    struct stack st2 = createStack(20);
 
-    struct node* currentNode = searchAKey(*rootNode, &st1, key);
-    struct node* currentNodeParent = stackTop(st1);
+    struct node* currentNode = searchAKey(*rootNode, &st1, key, 'D');
+    if (currentNode) {
+        // fetching the successor node
+        struct node* succNode = pop(&st1);
+        // replace the data of currentnode with the successornode
+        currentNode->data = succNode->data;
+        if (succNode->rchild)
+            stackTop(st1)->lchild = succNode->rchild;
+        
+        free(succNode);
+        succNode = 0;
 
-    inOrderSuccessor(currentNode, &st2);
-    struct node* currentNodeSucc = pop(&st2);
-    struct node* currentNodeSuccParent = pop(&st2);
+        // need to fix this bug
+        checkForRotation(rootNode, 0, pop(&st1), &st1, st1.top+1, 0);
 
-    int succData = currentNodeSucc->data;
-    currentNode->data = succData;
-
-    currentNodeSuccParent->lchild = currentNodeSucc->rchild;
-    free(currentNodeSucc);
-
-    // checking for balance factor of currentNode and the rootNode
-    int bf = balanceFactor(currentNode);
-    if (bf > 1 || bf < -1)
-        avlRotation(currentNodeParent, currentNode, key); // for now 0 is simply a placeholder
+    }
+    
 }
 
 void displayInOrder(struct node* rootNode) {
