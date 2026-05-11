@@ -179,23 +179,50 @@ int balanceFactor(struct node* currentNode) {
     return leftSubTreeHeight-rightSubTreeHeight;
 }
 
+void displayStack(struct stack st) {
+    if (!isEmptyStack(st)) {
+        printf ("The elements are: ");
+        for (int ind = st.top; ind >= 0; ind --)
+            printf ("%d ", (st.arr[ind])->data);
+        printf("\n");
+    }
+}
 
 void checkForRotation(
     struct node** rootNode, 
     struct node** parentNode, 
     struct node** currentNode, 
     struct stack* st, int totalHeight, 
-    int data) {
-    
+    int data,
+    char choice) {
+
     while (!isEmptyStack(*st)) {
-        *currentNode = pop(st);
-        if (!isEmptyStack(*st))
-            *parentNode = stackTop(*st);
-        else
-            *parentNode = 0;
         
+        *currentNode = pop(st);
+        printf ("current node data = %d\n", (*currentNode)->data);
+        printf ("hello there!!\n");
+
+        if (!isEmptyStack(*st)) {
+            *parentNode = stackTop(*st);
+            printf ("parent node data = %d\n", (*parentNode)->data);
+        }
+        else {
+            *parentNode = 0;
+            printf ("no parent\n");
+        }
+    
         (*currentNode)->height = getHeight(*st, *currentNode, totalHeight);
+        if (choice == 'D')
+            printf ("current node height = %d", (*currentNode)->height);
         int bf = balanceFactor(*currentNode);
+
+        if (choice == 'D') {
+            printf ("current node data = %d\n", (*currentNode)->data);
+            printf ("height of the current node = %d\n", (*currentNode)->height);
+            printf ("balance factor of the current node = %d\n", bf);
+            printf ("----------------------------------\n");
+        }
+
         if (bf > 1 || bf < -1) {
             
             struct node* temp = *parentNode;
@@ -206,6 +233,8 @@ void checkForRotation(
             if (!temp)
                 *rootNode = *parentNode;
         }
+        else    
+            printf ("rotation is not needed\n");
     }
 }
 
@@ -228,6 +257,7 @@ struct node* searchAKey(struct node* rootnode, struct stack* st, int key, char c
     while (ptr) {
         
         trail = ptr;
+        // printf("%d\n", trail->data);
         if (ptr->data == key)
             break;
         else if (ptr->data > key)
@@ -263,11 +293,12 @@ void insertNode(struct node** rootNode, int data) {
                 parentNewNode->rchild = newNode;
             
             int totalHeight = st.top+1;
+            printf ("total height = %d\n", totalHeight);
             
             struct node* currentNode = 0;
             struct node* parentNode = 0;
         
-            checkForRotation(rootNode, &parentNode, &currentNode, &st, totalHeight, data);
+            checkForRotation(rootNode, &parentNode, &currentNode, &st, totalHeight, data, 'I');
         }
         else
             printf ("already exists!!\n");
@@ -282,20 +313,18 @@ void deleteNode(struct node** rootNode, int key) {
 
     struct node* currentNode = searchAKey(*rootNode, &st1, key, 'D');
     if (currentNode) {
+        displayStack(st1);
         // fetching the successor node
         struct node* succNode = pop(&st1);
         // replace the data of currentnode with the successornode
         currentNode->data = succNode->data;
-        if (succNode->rchild)
-            stackTop(st1)->lchild = succNode->rchild;
+        
+        stackTop(st1)->lchild = succNode->rchild;
         
         free(succNode);
         succNode = 0;
-        printf ("to be done\n");
 
-        // need to fix this bug
-        checkForRotation(rootNode, 0, pop(&st1), &st1, st1.top+1, 0);
-// DSA-3 #done #comment to be completed
+        checkForRotation(rootNode, &currentNode, &currentNode, &st1, st1.top+1, 0, 'D');
     }
     
 }
