@@ -158,6 +158,8 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
 
 
 int getHeight(struct stack st, struct node* currentNode, int totalHeight) { // evaluates height
+    if (!currentNode->lchild && !currentNode->rchild)
+        return 0;
     int height = totalHeight-(st.top+1);
     
     if (height > currentNode->height)
@@ -199,29 +201,43 @@ void checkForRotation(
     while (!isEmptyStack(*st)) {
         
         *currentNode = pop(st);
-        printf ("current node data = %d\n", (*currentNode)->data);
-        printf ("hello there!!\n");
+        // for debugging 
+        // if (choice == 'D') {
+        //     printf("del part - 1\n");
+        //     printf ("current node data = %d\n", (*currentNode)->data);
+        //     printf ("parent node data = %d\n", (*parentNode)->data);
+        //     // printf ("height of the current node = %d\n", (*currentNode)->height);
+        //     // printf ("balance factor of the current node = %d\n", bf);
+        //     // printf ("\n===\n");
+        // }
 
         if (!isEmptyStack(*st)) {
             *parentNode = stackTop(*st);
-            printf ("parent node data = %d\n", (*parentNode)->data);
+            // for debugging
+            // printf ("current node data = %d\n", (*currentNode)->data);
+            // printf ("parent node data = %d\n", (*parentNode)->data);
+            // printf ("\n###\n");
         }
+            
         else {
             *parentNode = 0;
-            printf ("no parent\n");
+            // for debugging
+            // printf ("no parent\n");
         }
     
         (*currentNode)->height = getHeight(*st, *currentNode, totalHeight);
-        if (choice == 'D')
-            printf ("current node height = %d", (*currentNode)->height);
         int bf = balanceFactor(*currentNode);
 
-        if (choice == 'D') {
-            printf ("current node data = %d\n", (*currentNode)->data);
-            printf ("height of the current node = %d\n", (*currentNode)->height);
-            printf ("balance factor of the current node = %d\n", bf);
-            printf ("----------------------------------\n");
-        }
+        // for debugging
+        // if (choice == 'D') {
+        //     printf("del part - 2\n");
+        //     printf ("current node data = %d\n", (*currentNode)->data);
+        //     if (*parentNode)
+        //         printf ("parent node data = %d\n", (*parentNode)->data);
+        //     printf ("height of the current node = %d\n", (*currentNode)->height);
+        //     printf ("balance factor of the current node = %d\n", bf);
+        //     printf ("\n");
+        // }
 
         if (bf > 1 || bf < -1) {
             
@@ -309,6 +325,7 @@ void insertNode(struct node** rootNode, int data) {
 
 
 void deleteNode(struct node** rootNode, int key) {
+    printf ("under deletion operation\n");
     struct stack st1 = createStack(20);
 
     struct node* currentNode = searchAKey(*rootNode, &st1, key, 'D');
@@ -316,18 +333,33 @@ void deleteNode(struct node** rootNode, int key) {
         displayStack(st1);
         // fetching the successor node
         struct node* succNode = pop(&st1);
-        // replace the data of currentnode with the successornode
-        currentNode->data = succNode->data;
-        
-        stackTop(st1)->lchild = succNode->rchild;
-        
-        free(succNode);
-        succNode = 0;
+        struct node* parentNode = stackTop(st1);
 
-        checkForRotation(rootNode, &currentNode, &currentNode, &st1, st1.top+1, 0, 'D');
+        if (succNode->data == key) 
+            parentNode->lchild = succNode->lchild;
+
+        else {
+            // replace the data of currentnode with the successornode
+            currentNode->data = succNode->data;
+            
+            parentNode->lchild = succNode->rchild;
+
+            if (parentNode->rchild == succNode)
+                parentNode->rchild = 0;    
+        }
+
+        displayStack(st1);
+
+        free(succNode);
+        succNode = 0; // to avoid dangling pointers 
+
+        checkForRotation(rootNode, &parentNode, &currentNode, &st1, st1.top+1, 0, 'D');
+        // &currentNode and &parentNode are passed as a placeholder
     }
-    
+    else
+        printf ("key = %d is not found\n", key);
 }
+
 
 void displayInOrder(struct node* rootNode) {
     struct stack st = createStack(20);
@@ -373,19 +405,37 @@ int main() {
     struct node* rootNode = 0;
     
     insertNode(&rootNode, 33);
-    insertNode(&rootNode, 35);
-    insertNode(&rootNode, 38);
-    insertNode(&rootNode, 29);
-    insertNode(&rootNode, 46);
-    insertNode(&rootNode, 51);
+    // insertNode(&rootNode, 35);
+    // insertNode(&rootNode, 38);
+    // insertNode(&rootNode, 29);
+    // insertNode(&rootNode, 46);
+    // insertNode(&rootNode, 51);
     
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
+    
+    // deleteNode(&rootNode, 35);
+    
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
+
+    // deleteNode(&rootNode, 46);
+    
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
+
+    // deleteNode(&rootNode, 33);
+    
+    // displayPreOrder(rootNode);
+    // displayInOrder(rootNode);
+
+    // deleteNode(&rootNode, 38);
+    deleteNode(&rootNode, 29);
+
     displayPreOrder(rootNode);
     displayInOrder(rootNode);
-    
-    deleteNode(&rootNode, 35);
-    
-    displayPreOrder(rootNode);
-    displayInOrder(rootNode);
+
+    printf ("=========end=========\n");
     
     return 0;
 }
