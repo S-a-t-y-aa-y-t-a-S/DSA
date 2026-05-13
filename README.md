@@ -10,16 +10,22 @@
 
 #### Daily Standup Records (Click to expand)
 <details>
-<summary><b>Day 1 (11 May 2026)</b></summary>
-<b>Objective:</b><br>storing the nodes in stack<br> 
-<b>Wins:</b><br>able to search the given key, store all the nodes traversed in stack which helped to get the successor and its parent node<br>
-<b>Blockages:</b><br>facing segmentation fault thereafter while checking for balance factor<br>
+<summary><b>Day 3 (13 May 2026)</b></summary>
+<b>Objective:</b><br>testing out rotation in worst cases<br> 
+<b>Wins:</b><br>deletion operation in avl tree is done<br>
+<b>Blockages:</b><br>cutting off the branch of sub-tree by assigning null to its child node, depending on the traversal the child is left or right<br>
 </details>
 <details>
 <summary><b>Day 2 (12 May 2026)</b></summary>
 <b>Objective:</b><br>resolving segmentation fault<br> 
 <b>Wins:</b><br>successfully resolved segmentation fault and completed deletion operation<br>
 <b>Blockages:</b><br>need to check for a resultant tree which stays unbalanced after deletion<br>
+</details>
+<details>
+<summary><b>Day 1 (11 May 2026)</b></summary>
+<b>Objective:</b><br>storing the nodes in stack<br> 
+<b>Wins:</b><br>able to search the given key, store all the nodes traversed in stack which helped to get the successor and its parent node<br>
+<b>Blockages:</b><br>facing segmentation fault thereafter while checking for balance factor<br>
 </details>
 
 ---
@@ -41,7 +47,6 @@
 <b>Wins:</b><br>successfully created a branch and using smart commit shifted card from To Do to In Progress<br>
 <b>Blockages:</b><br>tried KANBAN template. SCRUM template suited the most<br>
 </details>
-<br>
 <details>
 <summary><b>Day 2 (10 May 2026)</b></summary>
 * <b>Objective:</b><br>replace the current node's data with successor<br> 

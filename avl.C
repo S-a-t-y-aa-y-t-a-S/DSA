@@ -240,6 +240,7 @@ void checkForRotation(
         // }
 
         if (bf > 1 || bf < -1) {
+            printf ("rotation for node data = %d needs to be done\n", (*currentNode)->data);
             
             struct node* temp = *parentNode;
             
@@ -330,23 +331,30 @@ void deleteNode(struct node** rootNode, int key) {
 
     struct node* currentNode = searchAKey(*rootNode, &st1, key, 'D');
     if (currentNode) {
-        displayStack(st1);
+        // displayStack(st1);
         // fetching the successor node
         struct node* succNode = pop(&st1);
-        struct node* parentNode = stackTop(st1);
+        struct node* parentNode = 0;
 
-        if (succNode->data == key) 
-            parentNode->lchild = succNode->lchild;
+        if (!isEmptyStack(st1)) {
+            parentNode = stackTop(st1);
 
-        else {
-            // replace the data of currentnode with the successornode
-            currentNode->data = succNode->data;
-            
-            parentNode->lchild = succNode->rchild;
+            if ((*rootNode)->rchild == succNode) 
+                (*rootNode)->rchild = succNode->rchild;
 
-            if (parentNode->rchild == succNode)
-                parentNode->rchild = 0;    
+            else {
+                // replace the data of currentnode with the successornode
+                currentNode->data = succNode->data;
+                
+                parentNode->lchild = succNode->rchild;
+
+                if (parentNode->rchild == succNode)
+                    parentNode->rchild = 0;    
+            }
         }
+        else    
+            parentNode = succNode->lchild;
+        
 
         displayStack(st1);
 
@@ -405,31 +413,31 @@ int main() {
     struct node* rootNode = 0;
     
     insertNode(&rootNode, 33);
-    // insertNode(&rootNode, 35);
-    // insertNode(&rootNode, 38);
-    // insertNode(&rootNode, 29);
-    // insertNode(&rootNode, 46);
-    // insertNode(&rootNode, 51);
+    insertNode(&rootNode, 35);
+    insertNode(&rootNode, 38);
+    insertNode(&rootNode, 29);
+    insertNode(&rootNode, 46);
+    insertNode(&rootNode, 51);
     
-    // displayPreOrder(rootNode);
-    // displayInOrder(rootNode);
+    displayPreOrder(rootNode);
+    displayInOrder(rootNode);
     
-    // deleteNode(&rootNode, 35);
+    deleteNode(&rootNode, 35);
     
-    // displayPreOrder(rootNode);
-    // displayInOrder(rootNode);
+    displayPreOrder(rootNode);
+    displayInOrder(rootNode);
 
-    // deleteNode(&rootNode, 46);
+    deleteNode(&rootNode, 46);
     
-    // displayPreOrder(rootNode);
-    // displayInOrder(rootNode);
+    displayPreOrder(rootNode);
+    displayInOrder(rootNode);
 
-    // deleteNode(&rootNode, 33);
+    deleteNode(&rootNode, 51);
     
-    // displayPreOrder(rootNode);
-    // displayInOrder(rootNode);
+    displayPreOrder(rootNode);
+    displayInOrder(rootNode);
 
-    // deleteNode(&rootNode, 38);
+    deleteNode(&rootNode, 38);
     deleteNode(&rootNode, 29);
 
     displayPreOrder(rootNode);
