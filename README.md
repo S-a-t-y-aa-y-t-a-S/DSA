@@ -10,6 +10,12 @@
 
 #### Daily Standup Records (Click to expand)
 <details>
+<summary><b>Day 4 (14 May 2026)</b></summary>
+<b>Objective:</b><br>learning about 2-3-trees<br> 
+<b>Wins:</b><br>understanding insertion operation on paper<br>
+<b>Blockages:</b><br>implementation of insertion operation in 2-3-trees<br>
+</details>
+<details>
 <summary><b>Day 3 (13 May 2026)</b></summary>
 <b>Objective:</b><br>testing out rotation in worst cases<br> 
 <b>Wins:</b><br>deletion operation in avl tree is done<br>
