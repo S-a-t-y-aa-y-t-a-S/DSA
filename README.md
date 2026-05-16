@@ -10,10 +10,22 @@
 
 #### Daily Standup Records (Click to expand)
 <details>
-<summary><b>Day 4 (14 May 2026)</b></summary>
+<summary><b>Day 6 (16 May 2026)</b></summary>
 <b>Objective:</b><br>learning about 2-3-trees<br> 
 <b>Wins:</b><br>understanding insertion operation on paper<br>
 <b>Blockages:</b><br>implementation of insertion operation in 2-3-trees<br>
+</details>
+<details>
+<summary><b>Day 5 (15 May 2026)</b></summary>
+<b>Objective:</b><br>adding searching functionality<br> 
+<b>Wins:</b><br>searching for a key in 2-3-trees is done and a stack push is added<br>
+<b>Blockages:</b><br>implementation of insertion the key if not found<br>
+</details>
+<details>
+<summary><b>Day 4 (14 May 2026)</b></summary>
+<b>Objective:</b><br>learning about 2-3-trees<br> 
+<b>Wins:</b><br>implementation of special cases of inserting a key to a node where loop is not used yet<br>
+<b>Blockages:</b><br>1) loop shall be used and be running until the stack does not become emmpty<br>2) connecting the new parent node to the given node's previous parent node<br>3) adding a sibling node to the given node so that the new parent node shall connect to both<br>
 </details>
 <details>
 <summary><b>Day 3 (13 May 2026)</b></summary>
