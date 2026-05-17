@@ -42,58 +42,68 @@ void insertion(struct node** rootNode, int key) {
     struct stack st = createStack(20);
     struct node* searchedNode = searchAKey(*rootNode, &st, key);
     if (!searchedNode) { // the node with that value is not found
-        struct node* ptrNode = pop(&st);
-        while (!isEmptyStack(st)) {
         
-            if (!ptrNode->data2 && key < ptrNode->data1) {
-                ptrNode->data2 = ptrNode->data1;
-                ptrNode->data1 = key;
-            }
+        struct node* ptrNode = pop(&st);
 
-            else if (!ptrNode->data2 && key > ptrNode->data1)
-                ptrNode->data2 = key;
-            
-            else if (ptrNode->data1 && ptrNode->data2) {
+        if (!ptrNode->data2 && key < ptrNode->data1) {
+            ptrNode->data2 = ptrNode->data1;
+            ptrNode->data1 = key;
+        }
 
-                struct node* parentNode = createNode();
-                struct node* siblingNode = createNode();
+        else if (!ptrNode->data2 && key > ptrNode->data1)
+            ptrNode->data2 = key;
 
-                if (key < ptrNode->data1) {
-                    parentNode->leftChild = ptrNode;
-                    parentNode->midChild = siblingNode;
-                    parentNode->data1 = ptrNode->data1;
-                    siblingNode->data1 = key;
-                    ptrNode->data1 = ptrNode->data2;
-                    ptrNode->data2 = 0;
+        // in 2-3 trees the existing leaf nodes get filled first,
+        // if already filled the nodes present above will be then filled, 
+        // that is how the height increases from bottom to up  
+
+        else if (ptrNode->data1 && ptrNode->data2) {
+
+            while (!isEmptyStack(st) && (ptrNode->data1 && ptrNode->data2)) {
+
+                if (!stackTop(st)->data2) {
+                    stackTop(st)->data2 = stackTop(st)->data1;
+                    stackTop(st)->data1 = ptrNode->data1;    
                 }
 
-                else if (key > ptrNode->data1 && key < ptrNode->data2) {
-                    parentNode->data1 = key;
-                    parentNode->leftChild = ptrNode;
-                    parentNode->midChild = siblingNode;
-                    siblingNode->data1 = ptrNode->data2;
-                    ptrNode->data2 = 0;
-                }
+                else {
+                    struct node* parentNode = createNode();
+                    struct node* siblingNode = createNode();
 
-                else if (key > ptrNode->data2) {
-                    parentNode->rightChild = siblingNode;
-                    parentNode->midChild = ptrNode;
-                    parentNode->data1 = ptrNode->data2;
-                    siblingNode->data1 = key;
-                    ptrNode->data2 = 0;
-                }
+                    if (key < ptrNode->data1) {
 
-                if (stackTop(st)->leftChild == ptrNode)
-                    stackTop(st)->leftChild = parentNode;
-                else if (stackTop(st)->midChild == ptrNode)
-                    stackTop(st)->midChild = parentNode;
-                else if (stackTop(st)->rightChild == ptrNode)
-                    stackTop(st)->rightChild = parentNode;
+                        parentNode->leftChild = ptrNode; 
+                        parentNode->midChild = siblingNode;
+                        parentNode->data1 = ptrNode->data1;
+                        siblingNode->data1 = key;                       
                 
-                ptrNode = pop(&st);
+                    }
+
+                    else if (key > ptrNode->data1 && key < ptrNode->data2) {
+                        
+                        parentNode->leftChild = siblingNode;
+                        parentNode->midChild = ptrNode;
+                        parentNode->data1 = key;
+                        siblingNode->data1 = ptrNode->data1;
+
+                    }
+                    
+                    else if (key > ptrNode->data2) {
+
+                        parentNode->rightChild = siblingNode;
+                        parentNode->midChild = ptrNode;
+                        parentNode->data1 = ptrNode->data2;
+                        siblingNode->data1 = key;
+
+                    }
+
+                }
+                ptrNode->data1 = ptrNode->data2;
+                ptrNode->data2 = 0;    
 
             }
         }
+
         
     }
     else  { // the node is found

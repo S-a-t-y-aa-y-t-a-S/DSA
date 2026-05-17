@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<helpers.C>
 
 struct node {
     int data;
@@ -8,58 +9,6 @@ struct node {
     int height;
 };
 
-struct stack {
-    int size;
-    int top;
-    struct node** arr;
-};
-
-
-int isEmptyStack(struct stack st) {
-    return st.top == -1;
-}
-
-int isFullStack(struct stack st) {
-    return st.size == st.top+1;
-}
-
-
-void push(struct stack* st, struct node* ptr) {
-    if (!isFullStack(*st)) {
-        st->top ++;
-        st->arr[st->top] = ptr;
-    }
-    else
-        printf ("Stack overflow\n");
-}
-
-
-struct node* pop(struct stack* st) {
-    struct node* ptr = 0;
-    if (!isEmptyStack(*st)) {
-        ptr = st->arr[st->top];
-        st->top --;
-    }
-    else
-        printf ("Stack underflow\n");
-    return ptr;
-}
-
-
-struct node* stackTop(struct stack st) {
-    if (!isEmptyStack(st))
-        return st.arr[st.top];
-    return 0;
-}
-
-
-struct stack createStack(int size) {
-    struct stack st;
-    st.top = -1;
-    st.size = size;
-    st.arr = (struct node**) malloc (size*sizeof(struct node*));
-    return st;
-}
 
 struct node* createNode(int data) {
     struct node* newNode = (struct node*) malloc (sizeof(struct node));
@@ -73,7 +22,8 @@ struct node* createNode(int data) {
 
 void avlRotation(struct node** parentNode, struct node** currentNode, int data) {
     
-    if ((*currentNode && (*currentNode)->lchild) && ((*currentNode)->data > data && (*currentNode)->lchild->data > data)) {
+    if ((*currentNode && (*currentNode)->lchild) && 
+    ((*currentNode)->data > data && (*currentNode)->lchild->data > data)) {
         // LL rotation
         if (!*parentNode) {
             *parentNode = (*currentNode)->lchild;
@@ -97,7 +47,8 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
         temp->rchild = *currentNode;
     }
     
-    else if ((*currentNode && (*currentNode)->lchild) && ((*currentNode)->data > data && (*currentNode)->lchild->data < data)) {
+    else if ((*currentNode && (*currentNode)->lchild) && 
+    ((*currentNode)->data > data && (*currentNode)->lchild->data < data)) {
         // LR rotation
         struct node* shiftedUpNode = (*currentNode)->lchild->rchild;
         
@@ -115,7 +66,8 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
         
     }
     
-    else if ((*currentNode && (*currentNode)->rchild) && ((*currentNode)->data < data && (*currentNode)->rchild->data > data)) {
+    else if ((*currentNode && (*currentNode)->rchild) && 
+    ((*currentNode)->data < data && (*currentNode)->rchild->data > data)) {
         // RL rotation
         struct node* shiftedUpNode = (*currentNode)->rchild->lchild;
         
@@ -132,7 +84,8 @@ void avlRotation(struct node** parentNode, struct node** currentNode, int data) 
             (*parentNode)->rchild = shiftedUpNode;    
     }
     
-    else if ((*currentNode && (*currentNode)->rchild) && ((*currentNode)->data < data && (*currentNode)->rchild->data < data)) {
+    else if ((*currentNode && (*currentNode)->rchild) &&
+    ((*currentNode)->data < data && (*currentNode)->rchild->data < data)) {
         // RR rotation
         if (!*parentNode) {
             *parentNode = (*currentNode)->rchild;

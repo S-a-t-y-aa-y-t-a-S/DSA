@@ -1,14 +1,24 @@
 ## Weekly Sprint logs
 
 ### Sprint 2: AVL ROTATION AFTER DELETION (Week 2 - May 2026)
-**Epic:** [DSA-1] avl rotation after deletion<br>
-**Sprint Summary Wins:** 
-- [to be filled by the end of this week]<br>
-**Sprint summary blockages:** 
-- [to be filled by the end of this week]
+**Epic:**<br> 
+DSA-1 avl rotation after deletion<br>
+DSA-5 2-3 tree operation<br>
+**Sprint Summary Wins:**<br>
+1) done solving the deletion in AVL tree<br>
+
+**Sprint summary blockages:** <br>
+1) work in progress for insertion operation in 2-3 trees
+
 
 
 #### Daily Standup Records (Click to expand)
+<details>
+<summary><b>Day 7 (17 May 2026)</b></summary>
+<b>Objective:</b><br>inserting a node a level up than the given node<br> 
+<b>Wins:</b><br>1) understanding the condition in which case parent node is required<br>2) it is mandatory to add a sibling node if the given node is already filled<br>3) 2-3 trees always fill from bottom to up<br>
+<b>Blockages:</b><br>there can be a situation where the parent node is already filled<br>2) sibling to the parent node need to be introduced in that case<br>3) now since there is common node connecting to the newly introduced sibling node and the current parent node, another node is to be created acting as parent to both<br>
+</details>
 <details>
 <summary><b>Day 6 (16 May 2026)</b></summary>
 <b>Objective:</b><br>learning about 2-3-trees<br> 
