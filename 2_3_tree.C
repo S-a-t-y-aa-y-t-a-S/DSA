@@ -39,6 +39,7 @@ struct node* searchAKey(struct node* ptr, struct stack* st, int key) {
 }
 
 void insertion(struct node** rootNode, int key) {
+
     struct stack st = createStack(20);
     struct node* searchedNode = searchAKey(*rootNode, &st, key);
     if (!searchedNode) { // the node with that value is not found
@@ -60,44 +61,114 @@ void insertion(struct node** rootNode, int key) {
         else if (ptrNode->data1 && ptrNode->data2) {
 
             while (!isEmptyStack(st) && (ptrNode->data1 && ptrNode->data2)) {
-
-                if (!stackTop(st)->data2) {
-                    stackTop(st)->data2 = stackTop(st)->data1;
-                    stackTop(st)->data1 = ptrNode->data1;    
-                }
-
-                else {
-                    struct node* parentNode = createNode();
-                    struct node* siblingNode = createNode();
-
-                    if (key < ptrNode->data1) {
-
-                        parentNode->leftChild = ptrNode; 
-                        parentNode->midChild = siblingNode;
-                        parentNode->data1 = ptrNode->data1;
-                        siblingNode->data1 = key;                       
                 
-                    }
+                struct node* siblingNode = createNode();
 
+                if (stackTop(st)->leftChild == ptrNode) {
+                    if (key < ptrNode->data1) {
+                        if (!ptrNode->data2) {
+                            ptrNode->data2 = ptrNode->data1;
+                            ptrNode->data1 = key;
+                        }
+                        else {
+                            siblingNode->data1 = key;
+                            stackTop(st)->midChild = ptrNode;
+                            stackTop(st)->leftChild = siblingNode;
+                        }
+                    }
                     else if (key > ptrNode->data1 && key < ptrNode->data2) {
-                        
-                        parentNode->leftChild = siblingNode;
-                        parentNode->midChild = ptrNode;
-                        parentNode->data1 = key;
-                        siblingNode->data1 = ptrNode->data1;
+                        //if (!stackTop(st)->data2) {
+                        stackTop(st)->data2 = key;
+                        siblingNode->data1 = ptrNode->data2;
+                        ptrNode->data2 = 0;
+                        stackTop(st)->rightChild = siblingNode;
+                        //}
+                    }
+                    else if (key > ptrNode->data2) {
+                        stackTop(st)->data2 = ptrNode->data2;
+                        siblingNode->data1 = key;
+                        ptrNode->data2 = 0;
+                        stackTop(st)->rightChild = siblingNode;
+                    }
+                }
+                else if (stackTop(st)->midChild == ptrNode) {
+                    if (key < ptrNode->data1) {
+                        if (!stackTop(st)->leftChild->data2)
+                            stackTop(st)->leftChild->data2 = key;
+                        else {
+                            struct node* parentNode = createNode();
+                            parentNode->data1 = stackTop(st)->leftChild->data2;
+                            siblingNode->data1 = key;
+                            parentNode->leftChild = ptrNode;
+                            parentNode->midChild = siblingNode;
+
+                            if (stackTop(st)->leftChild == parentNode->leftChild) {
+                                
+                            }
+                        }
+                    }
+                    else if (key > ptrNode->data1 && key < ptrNode->data2) {
 
                     }
-                    
                     else if (key > ptrNode->data2) {
 
-                        parentNode->rightChild = siblingNode;
-                        parentNode->midChild = ptrNode;
-                        parentNode->data1 = ptrNode->data2;
-                        siblingNode->data1 = key;
-
                     }
+                }
+                else if (stackTop(st)->rightChild == ptrNode) {
 
                 }
+
+
+
+
+
+                if (!stackTop(st)->data2) {
+                    if (key > ptrNode->data2) {
+                        stackTop(st)->data2 = ptrNode->data2;
+                        siblingNode->data1 = key;
+                        stackTop(st)->rightChild = siblingNode; 
+                    }
+                    else if (key > ptrNode->data1 && key < ptrNode->data2) {
+                        stackTop(st)->data2 = key;
+                        siblingNode->data1 = ptrNode->data2;
+                        ptrNode->data2 = 0;
+                        stackTop(st)->rightChild = siblingNode;
+                    }
+                    else if (key < ptrNode->data1) {
+
+                    }
+                }
+
+                struct node* parentNode = createNode();
+                
+
+                if (key < ptrNode->data1) {
+
+                    parentNode->leftChild = ptrNode; 
+                    parentNode->midChild = siblingNode;
+                    parentNode->data1 = ptrNode->data1;
+                    siblingNode->data1 = key;                       
+            
+                }
+
+                else if (key > ptrNode->data1 && key < ptrNode->data2) {
+                    
+                    parentNode->leftChild = siblingNode;
+                    parentNode->midChild = ptrNode;
+                    parentNode->data1 = key;
+                    siblingNode->data1 = ptrNode->data1;
+
+                }
+                
+                else if (key > ptrNode->data2) {
+
+                    parentNode->rightChild = siblingNode;
+                    parentNode->midChild = ptrNode;
+                    parentNode->data1 = ptrNode->data2;
+                    siblingNode->data1 = key;
+
+                }
+
                 ptrNode->data1 = ptrNode->data2;
                 ptrNode->data2 = 0;    
 

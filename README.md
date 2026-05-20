@@ -1,5 +1,41 @@
 ## Weekly Sprint logs
 
+### Sprint 3: INSERTION OPERATION ON 2-3-TREES (Week 3 - May 2026)
+**Epic:**<br> 
+DSA-5 2-3 tree operation<br>
+
+**Sprint Summary Wins:**<br>
+1) [to be stated by the weekend]
+
+**Sprint summary blockages:** <br>
+1) [to be stated by the weekend]
+
+
+
+#### Daily Standup Records (Click to expand)
+<details>
+<summary><b>Day 3 (20 May 2026)</b></summary>
+<b>Objective:</b><br>whether the given node is the left or mid or right child of the immediate parent node<br> 
+<b>Wins:</b><br>1) 3 main conditions are built<br>2) based on which the sibling and another parent node is decided<br>3) if the new parent node points to the same node as the immediate parent node, present in stack top, a common ancestral node is missing<br>
+<b>Blockages:</b><br>1) working on building the common ancestral node<br>
+</details>
+
+<details>
+<summary><b>Day 2 (19 May 2026)</b></summary>
+<b>Objective:</b><br>shifting the value up depending on whether it lies between first and second key or greater than second key<br> 
+<b>Wins:</b><br>1) checking for whether an empty space is present in the immediate parent of the given node<br>2) the int value to be shifted up shall occupy else another parent node is to be built<br>
+<b>Blockages:</b><br>whether the given node is the left or mid or right child of the immediate parent node<br>
+</details>
+
+<details>
+<summary><b>Day 1 (18 May 2026)</b></summary>
+<b>Objective:</b><br>Introducing sibling node<br> 
+<b>Wins:</b><br>1)shifting the second key from given node to the first key of sibling node<br>
+<b>Blockages:</b><br>shifting the value up depending on whether it lies between first and second key or greater than second key<br>
+</details>
+
+
+
 ### Sprint 2: AVL ROTATION AFTER DELETION (Week 2 - May 2026)
 **Epic:**<br> 
 DSA-1 avl rotation after deletion<br>
