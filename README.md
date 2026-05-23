@@ -13,6 +13,15 @@ DSA-5 2-3 tree operation<br>
 
 
 #### Daily Standup Records (Click to expand)
+
+<details>
+<summary><b>Day 4 (23 May 2026)</b></summary>
+<b>Objective:</b><br>refactoring the while block<br> 
+<b>Wins:</b><br>1) put 2 conditions: if both the spaces are covered (this is where sibling node is needed) and second one if either space is covered but not both (just shift the number if required)<br>2)used a temp variable to store the key<br>3)<br>
+<b>Blockages:</b><br>1) need to connect the newly sibling node with the node at stack top<br>
+</details>
+
+
 <details>
 <summary><b>Day 3 (20 May 2026)</b></summary>
 <b>Objective:</b><br>whether the given node is the left or mid or right child of the immediate parent node<br> 
