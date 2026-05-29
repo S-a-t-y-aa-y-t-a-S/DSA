@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<helpers.C>
+#include "helpers.C"
 
 struct node {
     struct node* leftChild;
@@ -8,10 +8,6 @@ struct node {
     int data1;
     int data2;
 };
-
-
-
-
 
 struct node* createNode() {
     struct node* newNode = (struct node*) malloc(sizeof(struct node));
@@ -38,6 +34,7 @@ struct node* searchAKey(struct node* ptr, struct stack* st, int key) {
     return ptr;
 }
 
+
 void insertion(struct node** rootNode, int key) {
 
     struct stack st = createStack(20);
@@ -46,110 +43,132 @@ void insertion(struct node** rootNode, int key) {
     if (ptr)
         printf ("%d already exists\n", key);
     else {
-        struct node* parentNode = 0;
-        struct node* siblingNode = 0;
-        int flag = 0;
+        if (!*rootNode) {
+            *rootNode = createNode();
+            (*rootNode)->data1 = key;
+        }
+        else {
+            struct node* sib1 = 0;
+            struct node* sib2 = 0;
+            struct node* siblingNode = 0;
+            int flag = 0;
 
-        while(!isEmptyStack(st)) {
-            
-            struct node* currentNode = pop(&st);
-            if (!isEmptyStack(st) && stackTop(st)->data2) {
-                // meaning if no parent node exists or the parent node is full
-                // create a new parent node
-                parentNode = createNode();
-                push(&st, parentNode);
-            }
-            if (currentNode->data1 && currentNode->data2) {
-                // meaning  the no space to insert the key in the current node
-                // popped out from the stack, representing the traversal
-                if (!siblingNode)
-                    siblingNode = createNode();
-                
-                if (parentNode) {
-                    // the newly created parent node is assigned its child and the value
-                    // the value can be the key or the already existing value shifted up depending 
-                    // upon the condition applied
-                    if (stackTop(st)->leftChild == currentNode) {
-                        stackTop(st)->leftChild = 0;
-                    }   
-                    else if (stackTop(st)->midChild == currentNode) {
-                        stackTop(st)->midChild = 0;
-                    } 
-                    else if (stackTop(st)->rightChild == currentNode) {
-                        stackTop(st)->rightChild = 0;
+            while(!isEmptyStack(st)) {
+                // need to work on the sibling node and the temp node
+                struct node* poppedNode = pop(&st);
+                if (!poppedNode->data2) {
+                    if (key < poppedNode->data1) {
+                        poppedNode->data2 = poppedNode->data1;
+                        poppedNode->data1 = key;
                     }
-                    if (key < currentNode->data1) {
-                        parentNode->data1 = currentNode->data1;
-                        parentNode->leftChild = siblingNode;
-                        parentNode->midChild = currentNode;
-                        siblingNode->data1 = key;
-                        currentNode->data1 = currentNode->data2;
-                        currentNode->data2 = 0;
-                    }
-                    else if (key > currentNode->data1 && key < currentNode->data2) {
-                        parentNode->data1 = key;
-                        parentNode->leftChild = currentNode;
-                        parentNode->midChild = siblingNode;
-                        siblingNode->data1 = currentNode->data2;
-                        currentNode->data2 = 0;
-                    }
-                    else if (key > currentNode->data2) {
-                        parentNode->data1 = currentNode->data2;
-                        parentNode->leftChild = currentNode;
-                        parentNode->midChild = siblingNode;
-                        siblingNode->data1 = key;
-                        currentNode->data2 = 0;
-                    }
-                    key = parentNode->data1;
+                    else 
+                        poppedNode->data2 = key;
+                    flag = 1;
+                    key = 0;
                 }
                 else {
-                    // need to fix the issue/bug
-                    // need to apply the sibling node over here
-                    int temp = 0;
-                    // ##make some changes in how does the stack top shall now be connected to the current node
-                    if (key < currentNode->data1) {
-                        currentNode->data1 = key;
-                        temp = currentNode->data1;
-                        siblingNode->data1 = currentNode->data2;
-                        
-                    }
-                    else if (key > currentNode->data1 && key < currentNode->data2) {
-                        temp = key;
-                        siblingNode->data1 = currentNode->data2;
-                    }
-                    else if (key > currentNode->data2) {
+                    siblingNode = createNode();
+                    if (key < poppedNode->data1) {
                         siblingNode->data1 = key;
-                        temp = currentNode->data2;
+                        key = poppedNode->data1;
+                        poppedNode->data1 = poppedNode->data2;
+                        poppedNode->data2 = 0;
+                        if (sib1 && sib2) {
+                            siblingNode->leftChild = sib1;
+                            siblingNode->midChild = sib2;
+                            poppedNode->leftChild = poppedNode->midChild;
+                            poppedNode->midChild = poppedNode->rightChild;
+                            poppedNode->rightChild = 0;
+                        }
                     }
-                    currentNode->data2 = 0;
-                    stackTop(st)->data2 = temp;
-                    
-                    flag = 1;
+                    else if (key > poppedNode->data1 && key < poppedNode->data2) {
+                        siblingNode->data1 = poppedNode->data2;
+                        poppedNode->data2 = 0;
+                        if (sib1 && sib2) {
+                            poppedNode->midChild = sib1;
+                            siblingNode->leftChild = sib2;
+                            siblingNode->midChild = siblingNode->rightChild;
+                            siblingNode->rightChild = 0;
+                        }
+                    }
+                    else {
+                        siblingNode->data1 = key;
+                        key = poppedNode->data2;
+                        poppedNode->data2 = 0;
+                        if (sib1 && sib2) {
+                            siblingNode->leftChild = sib2;
+                            siblingNode->midChild = sib1;
+                            poppedNode->rightChild = 0;
+                        }
+                    }
+                    sib1 = siblingNode;
+                    sib2 = poppedNode;
                 }
-                // need to transfer the child node of the newly created node to the immediate parent node
-                // newly created node then becomes the root node or the parent of the immediate parent or the thing will keep 
-                // on repeating
+                if (flag)
+                    break;
             }
-            else {
-                if (key < currentNode->data1) {
-                    currentNode->data2 = currentNode->data1;
-                    currentNode->data1 = key;
-                }
-                else
-                    currentNode->data2 = key;
-                flag = 1;
+            if (key) {
+                *rootNode = createNode();
+                (*rootNode)->data1 = key;
+                (*rootNode)->leftChild=sib1;
+                (*rootNode)->midChild=sib2;
             }
-            if (flag)
-                break;
         }
     }
-
+    printf ("-----END OF INSERTION-----\n");
 }
+
+// NEED TO FIX IT
+void inOrderTraversal(struct node* rootNode) {
+    struct stack st = createStack(20);
+    struct node* ptr = rootNode;
+    push(&st, ptr);
+    // will be stuck in a loop
+    // make some correction in the loop
+    ptr = ptr->leftChild;
+    while (!ptr && !isEmptyStack(st)) {
+        if (ptr->leftChild) {
+            push(&st, ptr);
+            ptr = ptr->leftChild;
+        }
+        else {
+            ptr = pop(&st);
+            printf ("%d ", ptr->data1);
+            if (ptr->data2)
+                printf ("%d ", ptr->data2);
+
+            ptr = pop(&st);
+            printf ("%d ", ptr->data1);
+            if (ptr->midChild) {
+                // printf ("%d ", ptr->data1);
+                ptr = ptr->midChild;
+                push(&st, ptr);
+            }
+            else {
+                ptr = pop(&st);
+                printf("%d ", ptr->data2);
+                if (ptr->rightChild) {
+                    ptr = ptr->rightChild;
+                    push(&st, ptr);
+                }
+            }
+        }
+    }
+    printf("\n");
+}
+
 
 int main() {
     struct node* rootNode = 0;
 
     insertion(&rootNode, 20);
+    insertion(&rootNode, 30);
+    insertion(&rootNode, 40);
+    // insertion(&rootNode, 50);
+    // insertion(&rootNode, 60);
+
+    printf("in order traversal: ");
+    inOrderTraversal(rootNode);
     
     return 0;
 }

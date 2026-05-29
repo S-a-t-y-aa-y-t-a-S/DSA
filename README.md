@@ -13,6 +13,12 @@ DSA-5 2-3 tree operation<br>
 
 
 #### Daily Standup Records (Click to expand)
+<details>
+<summary><b>Day 5 (29 May 2026)</b></summary>
+<b>Objective:</b><br>in-order traversal in 2-3-trees<br> 
+<b>Wins:</b><br>1) analysed the complete program in paper and constructed 4 most important conditional branches<br>2) programmatically working fine<br>
+<b>Blockages:</b><br>1) stuck in a loop of in-order traversal function<br>
+</details>
 
 <details>
 <summary><b>Day 4 (23 May 2026)</b></summary>
