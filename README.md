@@ -1,18 +1,27 @@
 ## Weekly Sprint logs
 
 ### Sprint 3: INSERTION OPERATION ON 2-3-TREES (Week 3 - May 2026)
-**Epic:**<br> 
+
+**Epic:**<br>
 DSA-5 2-3 tree operation<br>
 
 **Sprint Summary Wins:**<br>
-1) [to be stated by the weekend]
+
+1. work in progress
 
 **Sprint summary blockages:** <br>
-1) [to be stated by the weekend]
 
-
+1. working on insertion in 2-3-tree
 
 #### Daily Standup Records (Click to expand)
+
+<details>
+<summary><b>Day 6 (30 May 2026)</b></summary>
+<b>Objective:</b><br>resolving searching operation<br> 
+<b>Wins:</b><br>1) the insertion operation running well<br>2) assigning min and max int to the empty spaces of a node 
+<b>Blockages:</b><br>1) facing a bug of a new number but the app says it already exists<br>2) the numbers are displayed in reverse order while calling in-order traversal<br>3) stack underflow and segmentation fault
+</details>
+
 <details>
 <summary><b>Day 5 (29 May 2026)</b></summary>
 <b>Objective:</b><br>in-order traversal in 2-3-trees<br> 
@@ -26,7 +35,6 @@ DSA-5 2-3 tree operation<br>
 <b>Wins:</b><br>1) put 2 conditions: if both the spaces are covered (this is where sibling node is needed) and second one if either space is covered but not both (just shift the number if required)<br>2)used a temp variable to store the key<br>3)<br>
 <b>Blockages:</b><br>1) need to connect the newly sibling node with the node at stack top<br>
 </details>
-
 
 <details>
 <summary><b>Day 3 (20 May 2026)</b></summary>
@@ -49,21 +57,21 @@ DSA-5 2-3 tree operation<br>
 <b>Blockages:</b><br>shifting the value up depending on whether it lies between first and second key or greater than second key<br>
 </details>
 
-
-
 ### Sprint 2: AVL ROTATION AFTER DELETION (Week 2 - May 2026)
-**Epic:**<br> 
+
+**Epic:**<br>
 DSA-1 avl rotation after deletion<br>
 DSA-5 2-3 tree operation<br>
 **Sprint Summary Wins:**<br>
-1) done solving the deletion in AVL tree<br>
+
+1. done solving the deletion in AVL tree<br>
 
 **Sprint summary blockages:** <br>
-1) work in progress for insertion operation in 2-3 trees
 
-
+1. work in progress for insertion operation in 2-3 trees
 
 #### Daily Standup Records (Click to expand)
+
 <details>
 <summary><b>Day 7 (17 May 2026)</b></summary>
 <b>Objective:</b><br>inserting a node a level up than the given node<br> 
@@ -110,16 +118,20 @@ DSA-5 2-3 tree operation<br>
 ---
 
 ### Sprint 1: AVL ROTATION AFTER DELETION (Week 1 - May 2026)
+
 **Epic:** [DSA-1] avl rotation after deletion<br>
 **Sprint Summary Wins:**<br>
-1) replaced current node's data with successor.
-2) removed the physical node of the successor and connected its parent to its child.<br>
+
+1. replaced current node's data with successor.
+2. removed the physical node of the successor and connected its parent to its child.<br>
 
 **Sprint Summary Blockages:**<br>
-1) need to traverse from parent of the parent of the successor node back to the root node.
-2) checking each of their balance factor for rotation
+
+1. need to traverse from parent of the parent of the successor node back to the root node.
+2. checking each of their balance factor for rotation
 
 #### Daily Standup Records (Click to expand)
+
 <details>
 <summary><b>Day 1 (5 May 2026)</b></summary>
 <b>Objective:</b><br>connecting GITHUB repo to JIRA<br> 
@@ -132,4 +144,3 @@ DSA-5 2-3 tree operation<br>
 * <b>Wins:</b><br>able to replace current nodes's data with successor. removed the physical node of the successor and connected its parent to its child<br>
 * <b>Blockages:</b><br>need to traverse from parent of the successor node back to the root node and checking each of their balance factor for rotation.
 </details>
-
